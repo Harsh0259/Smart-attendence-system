@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student - Mark Attendance</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- HTML5 QR Code Scanner Library -->
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Scan Attendance QR</h1>
+        <p class="subtitle" id="student-status">Scan the QR code displayed by your teacher</p>
+        
+        <div id="reader"></div>
+        
+        <div class="loader" id="student-loader"></div>
+        <div id="result-message" class="status-message"></div>
+
+        <button id="start-scan-btn" class="btn">Start Camera</button>
+        <a href="index.html" class="nav-link">&larr; Back to Home</a>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

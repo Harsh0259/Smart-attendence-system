@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher - Generate QR</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- QR Code Generator Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Generate Attendance QR</h1>
+        <p class="subtitle" id="location-status">Waiting for location access...</p>
+        
+        <div class="loader" id="loader"></div>
+        
+        <div id="qr-wrapper" style="display: none;">
+            <div id="qr-container"></div>
+            <p id="expiry-text" style="color: var(--danger); font-weight: 600; margin-top: 10px;">Valid for: 2:00</p>
+        </div>
+
+        <button id="generate-btn" class="btn">Generate New QR Code</button>
+        <a href="index.html" class="nav-link">&larr; Back to Home</a>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
