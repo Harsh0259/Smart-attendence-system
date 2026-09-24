@@ -3,23 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student - Mark Attendance</title>
+    <title>Synapse // Student Portal - Scan Attendance</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <!-- HTML5 QR Code Scanner Library -->
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 </head>
 <body>
-    <div class="container">
-        <h1>Scan Attendance QR</h1>
-        <p class="subtitle" id="student-status">Scan the QR code displayed by your teacher</p>
-        
-        <div id="reader"></div>
-        
-        <div class="loader" id="student-loader"></div>
-        <div id="result-message" class="status-message"></div>
+    <!-- Ambient Floating Orbs -->
+    <div class="ambient-canvas" aria-hidden="true">
+        <div class="ambient-grid"></div>
+        <div class="orb orb-violet-top"></div>
+        <div class="orb orb-cyan-left"></div>
+        <div class="orb orb-violet-right"></div>
+    </div>
 
-        <button id="start-scan-btn" class="btn">Start Camera</button>
-        <a href="index.html" class="nav-link">&larr; Back to Home</a>
+    <div class="attendance-page">
+        <div class="container" style="max-width: 480px;">
+            <div class="hero-badge" style="margin-bottom: 0;">
+                <span class="pulse-emerald" aria-hidden="true"></span>
+                <span>Student Geo-Attendance Scanner</span>
+            </div>
+
+            <h1 style="font-size: 32px; margin-bottom: 4px;">Scan Attendance QR</h1>
+            <p class="subtitle" id="student-status" style="margin-bottom: 16px;">
+                Scan the active teacher QR code within the classroom's geo-fence time limit
+            </p>
+
+            <!-- Student Identity Input Group -->
+            <div class="student-id-strip">
+                <div class="input-group" style="flex: 1;">
+                    <label for="student-name-input">Student Name</label>
+                    <input id="student-name-input" type="text" placeholder="Your Name (e.g. Maya Chen)" value="Alex Rivera">
+                </div>
+                <div class="input-group" style="width: 120px;">
+                    <label for="student-id-input">Roll / ID</label>
+                    <input id="student-id-input" type="text" placeholder="e.g. 2026-CS-042" value="CS-108">
+                </div>
+            </div>
+            
+            <!-- Live Camera Viewport Container -->
+            <div id="reader" style="margin-top: 12px;"></div>
+            
+            <div class="loader" id="student-loader"></div>
+            <div id="result-message" class="status-message"></div>
+
+            <!-- Start Scanner Button -->
+            <button id="start-scan-btn" class="btn" style="margin-top: 12px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                    <circle cx="12" cy="13" r="4"></circle>
+                </svg>
+                <span>Start Camera Scanner</span>
+            </button>
+
+            <!-- Quick Cross-Tab Test Simulator -->
+            <div class="manual-verify-box">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 11px; font-family: var(--font-mono); color: var(--white-60); display: flex; align-items: center; gap: 4px;">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                        </svg>
+                        Test / Direct Payload Verification:
+                    </span>
+                    <button id="sync-latest-teacher-qr-btn" class="btn-text" style="font-size: 11px; color: var(--accent-cyan-light);">
+                        ⚡ Fetch Live Teacher QR
+                    </button>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <input id="manual-test-input" type="text" placeholder="Paste scanned QR JSON payload..." style="flex: 1; padding: 8px 12px; background: rgba(0,0,0,0.5); border: 1px solid var(--white-15); border-radius: 8px; color: #fff; font-family: var(--font-mono); font-size: 11px; outline: none;">
+                    <button id="manual-test-btn" class="btn" style="padding: 6px 14px; font-size: 12px;">Verify</button>
+                </div>
+            </div>
+            
+            <!-- Navigation Links -->
+            <div style="display: flex; gap: 16px; align-items: center; margin-top: 12px;">
+                <a href="teacher.html" class="nav-link" style="font-size: 12px; color: var(--accent-violet-light);">Switch to Teacher Portal &rarr;</a>
+                <span style="color: var(--white-20);">•</span>
+                <a href="index.html" class="nav-link" style="font-size: 12px;">&larr; Back to Home</a>
+            </div>
+        </div>
     </div>
 
     <script src="app.js"></script>

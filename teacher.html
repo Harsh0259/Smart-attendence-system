@@ -3,25 +3,246 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teacher - Generate QR</title>
+    <title>Synapse // Teacher Portal - Authorized QR Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <!-- QR Code Generator Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h1>Generate Attendance QR</h1>
-        <p class="subtitle" id="location-status">Waiting for location access...</p>
-        
-        <div class="loader" id="loader"></div>
-        
-        <div id="qr-wrapper" style="display: none;">
-            <div id="qr-container"></div>
-            <p id="expiry-text" style="color: var(--danger); font-weight: 600; margin-top: 10px;">Valid for: 2:00</p>
-        </div>
+    <!-- Ambient Floating Orbs -->
+    <div class="ambient-canvas" aria-hidden="true">
+        <div class="ambient-grid"></div>
+        <div class="orb orb-violet-top"></div>
+        <div class="orb orb-cyan-left"></div>
+        <div class="orb orb-violet-right"></div>
+    </div>
 
-        <button id="generate-btn" class="btn">Generate New QR Code</button>
-        <a href="index.html" class="nav-link">&larr; Back to Home</a>
+    <div class="attendance-page">
+        <div class="container teacher-container">
+
+            <!-- =========================================================
+                 1. TEACHER AUTHENTICATION & PERMISSION GATE
+                 ========================================================= -->
+            <div id="teacher-auth-gate" class="teacher-auth-card">
+                <div class="auth-icon-wrapper">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-violet-light);">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                </div>
+
+                <div class="hero-badge" style="margin-bottom: 4px;">
+                    <span class="pulse-emerald" aria-hidden="true"></span>
+                    <span>Teacher Authorization Required</span>
+                </div>
+
+                <h2 style="font-family: var(--font-display); font-size: 28px; margin: 4px 0 8px 0; color: #fff;">Teacher Access Gate</h2>
+                <p class="subtitle" style="max-width: 380px; margin-bottom: 20px;">
+                    Only authorized faculty members can generate and manage live geo-fenced attendance QR codes.
+                </p>
+
+                <form id="teacher-auth-form" class="auth-form-body" onsubmit="return false;">
+                    <div class="input-group">
+                        <label for="teacher-passcode-input">Teacher Passcode / PIN</label>
+                        <div class="input-with-icon">
+                            <input id="teacher-passcode-input" type="password" placeholder="Enter teacher PIN (Default: TEACH-2026)" autocomplete="current-password" required>
+                            <button type="button" id="toggle-pass-visibility" class="icon-btn" title="Toggle visibility">
+                                👁️
+                            </button>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%;">
+                        <div class="input-group">
+                            <label for="teacher-name-input">Instructor Name</label>
+                            <input id="teacher-name-input" type="text" value="Dr. Vance" placeholder="e.g. Dr. Vance" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="teacher-course-input">Course / Subject</label>
+                            <input id="teacher-course-input" type="text" value="CS-402: Neural Computing" placeholder="e.g. CS-402" required>
+                        </div>
+                    </div>
+
+                    <div id="auth-error-msg" class="auth-error-badge" style="display: none;"></div>
+
+                    <button type="submit" id="auth-submit-btn" class="btn" style="width: 100%; margin-top: 8px;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <span>Authorize & Launch Session</span>
+                    </button>
+
+                    <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 6px;">
+                        <button type="button" id="quick-demo-auth-btn" class="btn-text" style="font-size: 11px; color: var(--accent-cyan-light);">
+                            ⚡ Quick Demo Unlock (TEACH-2026)
+                        </button>
+                        <span style="font-size: 11px; color: var(--white-40); font-family: var(--font-mono);">Faculty Gate v2.4</span>
+                    </div>
+                </form>
+            </div>
+
+            <!-- =========================================================
+                 2. AUTHORIZED TEACHER SESSION & QR CONTROLLER
+                 ========================================================= -->
+            <div id="teacher-session-view" style="display: none; width: 100%; max-width: 520px; flex-direction: column; align-items: center; gap: 16px;">
+                
+                <!-- Faculty Session Header Banner -->
+                <div class="teacher-status-banner">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div class="auth-indicator-dot"></div>
+                        <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                                <span id="session-teacher-name" style="font-size: 13px; font-weight: 600; color: #fff;">Dr. Vance</span>
+                                <span class="badge-role">INSTRUCTOR</span>
+                            </div>
+                            <span id="session-teacher-course" style="font-size: 11px; font-family: var(--font-mono); color: var(--white-60);">CS-402: Neural Computing</span>
+                        </div>
+                    </div>
+                    <button id="teacher-logout-btn" class="btn-lock" title="Lock session & revoke permission">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                        <span>Lock</span>
+                    </button>
+                </div>
+
+                <!-- Page Heading & GPS Status -->
+                <div style="text-align: center; margin-bottom: 0;">
+                    <h1 style="font-size: 32px; margin-bottom: 4px;">Attendance QR Generator</h1>
+                    <p class="subtitle" id="location-status" style="margin-bottom: 0;">Acquiring geo-fence coordinates...</p>
+                </div>
+
+                <div class="loader" id="loader"></div>
+
+                <!-- TIME LIMIT & AVAILABILITY CONFIGURATION PANEL -->
+                <div class="config-card">
+                    <div class="config-header">
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-amber);">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                            <span class="config-title">QR Availability Time Limit</span>
+                        </div>
+                        <span id="active-duration-badge" class="duration-badge">5 Minutes Total</span>
+                    </div>
+
+                    <!-- Preset Time Limit Buttons -->
+                    <div class="duration-pill-group" id="duration-pill-group">
+                        <button type="button" class="duration-pill" data-mins="1">1 Min</button>
+                        <button type="button" class="duration-pill" data-mins="2">2 Min</button>
+                        <button type="button" class="duration-pill active" data-mins="5">5 Min</button>
+                        <button type="button" class="duration-pill" data-mins="10">10 Min</button>
+                        <button type="button" class="duration-pill" data-mins="15">15 Min</button>
+                        <button type="button" class="duration-pill" data-mins="custom">Custom</button>
+                    </div>
+
+                    <!-- Custom Duration Input (hidden by default) -->
+                    <div id="custom-duration-wrapper" class="custom-duration-row" style="display: none;">
+                        <input id="custom-duration-input" type="number" min="1" max="180" placeholder="Enter minutes (1-180)" value="7">
+                        <button id="apply-custom-duration-btn" class="btn" style="padding: 6px 12px; font-size: 11px;">Set Time Limit</button>
+                    </div>
+
+                    <!-- Dynamic Session Countdown Meter -->
+                    <div class="session-timer-widget" id="session-timer-widget">
+                        <div class="timer-flex">
+                            <div class="timer-col">
+                                <span class="timer-sublabel">SESSION AVAILABILITY</span>
+                                <span id="session-time-remaining" class="timer-digits">05:00</span>
+                            </div>
+                            <div class="timer-status-badge active" id="session-status-badge">
+                                <span class="pulse-dot"></span>
+                                <span id="session-status-text">QR LIVE</span>
+                            </div>
+                        </div>
+
+                        <!-- Overall Session Progress Bar -->
+                        <div class="session-progress-track">
+                            <div id="session-progress-fill" class="session-progress-fill" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- QR CODE WRAPPER WITH EXPIRED OVERLAY -->
+                <div id="qr-wrapper" class="qr-wrapper-card">
+                    <div class="qr-frame-relative">
+                        <div id="qr-container"></div>
+                        
+                        <!-- Expired Session Glass Overlay -->
+                        <div id="qr-expired-overlay" class="qr-expired-overlay" style="display: none;">
+                            <div class="expired-modal-content">
+                                <div class="expired-icon">
+                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #f87171;">
+                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                    </svg>
+                                </div>
+                                <span class="expired-title">QR Time Limit Expired</span>
+                                <p class="expired-desc">This attendance window has closed. Generate a new session or extend the time limit.</p>
+                                <div style="display: flex; gap: 8px; margin-top: 4px;">
+                                    <button id="renew-session-btn" class="btn" style="padding: 8px 14px; font-size: 12px;">
+                                        <span>Restart Session</span>
+                                    </button>
+                                    <button id="overlay-extend-btn" class="btn btn-secondary" style="padding: 8px 14px; font-size: 12px;">
+                                        <span>+2 Mins</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rotation Progress Bar -->
+                    <div class="rotation-bar-container" title="Time until next dynamic anti-spoof rotation">
+                        <div id="rotation-progress-bar" class="rotation-progress-bar"></div>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; margin-top: 2px;">
+                        <p id="expiry-text" style="color: var(--accent-amber); font-family: var(--font-mono); font-size: 12px; font-weight: 600; margin: 0;">Rotating in 15s</p>
+                        <div style="display: flex; gap: 8px; align-items: center; margin-top: 4px; flex-wrap: wrap; justify-content: center;">
+                            <span id="qr-token-tag" class="token-tag">Token: #INITIALIZING</span>
+                            <span id="gps-type-badge" class="gps-badge simulated">Classroom GPS</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ACTION BUTTON CONTROLS -->
+                <div style="display: flex; gap: 8px; align-items: center; justify-content: center; flex-wrap: wrap; margin-top: 4px; width: 100%;">
+                    <button id="generate-btn" class="btn">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="23 4 23 10 17 10"></polyline>
+                            <polyline points="1 20 1 14 7 14"></polyline>
+                            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                        </svg>
+                        <span>Rotate QR Now</span>
+                    </button>
+
+                    <button id="extend-time-btn" class="btn btn-secondary" title="Add 2 minutes to the current QR time limit">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-emerald);">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="16"></line>
+                            <line x1="8" y1="12" x2="16" y2="12"></line>
+                        </svg>
+                        <span>+2 Min Limit</span>
+                    </button>
+
+                    <button id="auto-rotate-toggle-btn" class="btn btn-secondary" style="font-size: 12px;">
+                        <span id="auto-rotate-status">Auto-Rotate: ON (15s)</span>
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- Portal Navigation Footer Links -->
+            <div style="display: flex; gap: 16px; align-items: center; margin-top: 16px;">
+                <a href="student.html" class="nav-link" style="font-size: 12px; color: var(--accent-cyan-light);">Switch to Student Portal &rarr;</a>
+                <span style="color: var(--white-20);">•</span>
+                <a href="index.html" class="nav-link" style="font-size: 12px;">&larr; Back to Home</a>
+            </div>
+        </div>
     </div>
 
     <script src="app.js"></script>

@@ -1,18 +1,695 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Attendance System</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Synapse - A futuristic dark-themed neural design system with editorial typography, floating ambient orbs, and neon micro-interactions.">
+  <title>Synapse // Next-Gen Neural Interface System</title>
+  
+  <!-- Preconnect to Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Geo-Fenced Attendance</h1>
-        <p class="subtitle">Secure location-based attendance marking</p>
-        
-        <a href="teacher.html" class="btn">Teacher Portal</a>
-        <a href="student.html" class="btn btn-secondary">Student Portal</a>
+
+  <!-- =========================================================================
+       Ambient Floating Canvas & Glowing Orbs
+       ========================================================================= -->
+  <div class="ambient-canvas" aria-hidden="true">
+    <div class="ambient-grid"></div>
+    <div class="orb orb-violet-top" id="orbVioletTop"></div>
+    <div class="orb orb-cyan-left" id="orbCyanLeft"></div>
+    <div class="orb orb-violet-right" id="orbVioletRight"></div>
+    <div class="orb orb-cyan-bottom" id="orbCyanBottom"></div>
+  </div>
+
+  <!-- =========================================================================
+       Fixed Glass Navigation Pill (Width: 95% max-width 672px, top-6, left-1/2)
+       ========================================================================= -->
+  <header class="nav-container" id="navContainer">
+    <nav class="nav-pill" aria-label="Main Navigation">
+      <!-- Left-aligned Logo -->
+      <a href="#hero" class="nav-logo" id="navLogo">
+        <span class="nav-logo-dot" aria-hidden="true"></span>
+        <span class="nav-logo-text">Synapse</span>
+      </a>
+
+      <!-- Center-aligned Links -->
+      <ul class="nav-links" id="navLinks">
+        <li><a href="teacher.html" class="nav-link" style="color: var(--accent-violet-light);">Teacher Portal</a></li>
+        <li><a href="student.html" class="nav-link" style="color: var(--accent-cyan-light);">Student Portal</a></li>
+        <li><a href="#features" class="nav-link">Features</a></li>
+        <li><a href="#code" class="nav-link">Integrations</a></li>
+        <li><a href="#playground" class="nav-link">Tokens</a></li>
+      </ul>
+
+      <!-- Right-aligned CTA -->
+      <a href="student.html" class="nav-cta-btn" id="navCta">
+        <span>Mark Attendance</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </a>
+
+      <!-- Mobile Toggle -->
+      <button class="mobile-toggle" id="mobileMenuBtn" aria-label="Toggle Navigation Menu">
+        <span></span>
+        <span></span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- =========================================================================
+       Main Content Container
+       ========================================================================= -->
+  <main class="page-wrapper">
+
+    <!-- HERO SECTION -->
+    <section class="section-container hero-section" id="hero">
+      <!-- Staggered Entry Item 1: Announcement Badge -->
+      <div class="hero-badge stagger-item stagger-1" id="heroBadge">
+        <span class="pulse-emerald" aria-hidden="true"></span>
+        <span>Geo-Fenced Attendance System Active</span>
+      </div>
+
+      <!-- Staggered Entry Item 2: Massive Editorial Heading -->
+      <h1 class="hero-heading stagger-item stagger-2">
+        Precision Geo-Fenced <span class="shimmer-text">Attendance.</span>
+      </h1>
+
+      <!-- Staggered Entry Item 3: Subtext -->
+      <p class="hero-subtext stagger-item stagger-3">
+        Secure location-verified attendance marking with sub-meter GPS validation, dynamic rotating QR codes, and the futuristic Synapse dark interface.
+      </p>
+
+      <!-- Staggered Entry Item 4: Interactive Actions -->
+      <div class="hero-actions stagger-item stagger-4">
+        <!-- Teacher Portal: Shiny Border Button with Conic Spinning Gradient -->
+        <a href="teacher.html" class="shiny-btn-container" id="heroPrimaryCta">
+          <div class="shiny-btn-content">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-violet-light);">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="8" y1="12" x2="16" y2="12"></line>
+              <line x1="12" y1="8" x2="12" y2="16"></line>
+            </svg>
+            <span>Teacher: Generate QR</span>
+          </div>
+        </a>
+
+        <!-- Student Portal: Secondary Action -->
+        <a href="student.html" class="secondary-link" id="heroStudentLink" style="border-color: var(--accent-cyan); color: var(--accent-cyan-light);">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+            <circle cx="12" cy="13" r="4"></circle>
+          </svg>
+          <span>Student: Scan QR</span>
+        </a>
+      </div>
+
+      <!-- Staggered Entry Item 5: Quick Specs Row -->
+      <div class="hero-specs-strip stagger-item stagger-5">
+        <div class="spec-item">
+          <span class="spec-label">Inference Latency</span>
+          <span class="spec-val" style="color: var(--accent-cyan-light);">< 0.82 ms</span>
+        </div>
+        <div class="spec-divider"></div>
+        <div class="spec-item">
+          <span class="spec-label">Context Horizon</span>
+          <span class="spec-val">2.5M Tokens</span>
+        </div>
+        <div class="spec-divider"></div>
+        <div class="spec-item">
+          <span class="spec-label">Global Status</span>
+          <span class="spec-val" style="color: var(--accent-emerald);">100% Deterministic</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- METRICS TICKER SECTION (Full width infinite horizontal scroll, 40s linear loop) -->
+    <section class="ticker-section" id="metricsTicker" aria-label="Live System Telemetry">
+      <div class="ticker-track">
+        <!-- Group 1 -->
+        <div class="ticker-group">
+          <div class="ticker-item">
+            <span class="ticker-label">LATENCY INDEX</span>
+            <span class="ticker-value cyan">0.82MS</span>
+          </div>
+          <div class="ticker-sep"></div>
+          <div class="ticker-item">
+            <span class="ticker-label">CONTEXT HORIZON</span>
+            <span class="ticker-value">2.5M TOKENS</span>
+          </div>
+          <div class="ticker-sep"></div>
+          <div class="ticker-item">
+            <span class="ticker-label">NEURAL NODES</span>
+            <span class="ticker-value violet">48,920 ACTIVE</span>
+          </div>
+          <div class="ticker-sep"></div>
+          <div class="ticker-item">
+            <span class="ticker-label">COLD-START</span>
+            <span class="ticker-value emerald">0.00MS (ZERO)</span>
+          </div>
+          <div class="ticker-sep"></div>
+          <div class="ticker-item">
+            <span class="ticker-label">GLOBAL POPs</span>
+            <span class="ticker-value">34 REGIONS</span>
+          </div>
+          <div class="ticker-sep"></div>
+          <div class="ticker-item">
+            <span class="ticker-label">CRYPTOGRAPHIC AUDIT</span>
+            <span class="ticker-value emerald">ISO-27001 SECURE</span>
+          </div>
+          <div class="ticker-sep"></div>
+          <div class="ticker-item">
+            <span class="ticker-label">THROUGHPUT PEAK</span>
+            <span class="ticker-value cyan">4.8 TB/S</span>
+          </div>
+          <div class="ticker-sep"></div>
+          <div class="ticker-item">
+            <span class="ticker-label">ENERGY EFFICIENCY</span>
+            <span class="ticker-value">99.4% NEUTRAL</span>
+          </div>
+          <div class="ticker-sep"></div>
+        </div>
+
+        <!-- Group 2 (Duplicate for seamless continuous loop) -->
+        <div class="ticker-group" aria-hidden="true">
+          <div class="ticker-item">
+            <span class="ticker-label">LATENCY INDEX</span>
+            <span class="ticker-value cyan">0.82MS</span>
+          </div>
+          <div class="ticker-sep"></div>
+          <div class="ticker-item">
+            <span class="ticker-label">CONTEXT HORIZON</span>
+            <span class="ticker-value">2.5M TOKENS</span>
+          </div>
+          <div class="ticker-sep"></div>
+          <div class="ticker-item">
+            <span class="ticker-label">NEURAL NODES</span>
+            <span class="ticker-value violet">48,920 ACTIVE</span>
+          </div>
+          <div class="ticker-sep"></div>
+          <div class="ticker-item">
+            <span class="ticker-label">COLD-START</span>
+            <span class="ticker-value emerald">0.00MS (ZERO)</span>
+          </div>
+          <div class="ticker-sep"></div>
+          <div class="ticker-item">
+            <span class="ticker-label">GLOBAL POPs</span>
+            <span class="ticker-value">34 REGIONS</span>
+          </div>
+          <div class="ticker-sep"></div>
+          <div class="ticker-item">
+            <span class="ticker-label">CRYPTOGRAPHIC AUDIT</span>
+            <span class="ticker-value emerald">ISO-27001 SECURE</span>
+          </div>
+          <div class="ticker-sep"></div>
+          <div class="ticker-item">
+            <span class="ticker-label">THROUGHPUT PEAK</span>
+            <span class="ticker-value cyan">4.8 TB/S</span>
+          </div>
+          <div class="ticker-sep"></div>
+          <div class="ticker-item">
+            <span class="ticker-label">ENERGY EFFICIENCY</span>
+            <span class="ticker-value">99.4% NEUTRAL</span>
+          </div>
+          <div class="ticker-sep"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURE GRID (3-Column Grid of Cards with Scroll-Reveal & Hover Lift) -->
+    <section class="section-container feature-section" id="features">
+      <div class="section-header-block">
+        <span class="section-tag">[ CORE ARCHITECTURE ]</span>
+        <h2 class="section-title">Engineered for extreme cognitive velocity.</h2>
+        <p class="section-desc">
+          Every primitive in the Synapse substrate is purpose-built to eliminate latency, maximize throughput, and deliver flawless real-time responsiveness.
+        </p>
+      </div>
+
+      <div class="feature-grid">
+        <!-- Feature Card 1 -->
+        <article class="feature-card" data-card="1">
+          <div class="feature-card-glow" aria-hidden="true"></div>
+          <div>
+            <div class="feature-icon-box" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                <polyline points="2 17 12 22 22 17"></polyline>
+                <polyline points="2 12 12 17 22 12"></polyline>
+              </svg>
+            </div>
+            <h3 class="feature-card-title">Neural Vector Engine</h3>
+            <p class="feature-card-desc">
+              Hyper-dimensional vector indexing with hardware-fused SIMD kernels, guaranteeing sub-millisecond nearest neighbor retrieval at billions scale.
+            </p>
+          </div>
+          <div class="card-micro-widget">
+            <span class="widget-label">Index Latency</span>
+            <div class="widget-value">
+              <span id="cardWidgetVal1">0.42 ms</span>
+              <div class="sparkline-bar" aria-hidden="true">
+                <span style="height: 6px;"></span>
+                <span style="height: 14px;"></span>
+                <span style="height: 9px;"></span>
+                <span style="height: 16px;"></span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Feature Card 2 -->
+        <article class="feature-card" data-card="2">
+          <div class="feature-card-glow" aria-hidden="true"></div>
+          <div>
+            <div class="feature-icon-box cyan-tint" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+              </svg>
+            </div>
+            <h3 class="feature-card-title">Deterministic Cold-Starts</h3>
+            <p class="feature-card-desc">
+              Memory snapshots are dynamically warm-restored into L3 cache before request arrival, eradicating cold-start overhead completely.
+            </p>
+          </div>
+          <div class="card-micro-widget">
+            <span class="widget-label">Warm Restore</span>
+            <div class="widget-value" style="color: var(--accent-emerald);">
+              <span>0.00 ms (Zero)</span>
+              <span class="pulse-emerald" style="display:inline-block;" aria-hidden="true"></span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Feature Card 3 -->
+        <article class="feature-card" data-card="3">
+          <div class="feature-card-glow" aria-hidden="true"></div>
+          <div>
+            <div class="feature-icon-box" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="18" cy="5" r="3"></circle>
+                <circle cx="6" cy="12" r="3"></circle>
+                <circle cx="18" cy="19" r="3"></circle>
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+              </svg>
+            </div>
+            <h3 class="feature-card-title">Autonomous Swarms</h3>
+            <p class="feature-card-desc">
+              Multi-agent orchestration primitives with consensus verification, structured tool dispatching, and dynamic DAG self-healing.
+            </p>
+          </div>
+          <div class="card-micro-widget">
+            <span class="widget-label">Consensus Epoch</span>
+            <div class="widget-value">
+              <span>99.98% Synced</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+          </div>
+        </article>
+
+        <!-- Feature Card 4 -->
+        <article class="feature-card" data-card="4">
+          <div class="feature-card-glow" aria-hidden="true"></div>
+          <div>
+            <div class="feature-icon-box cyan-tint" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+                <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+                <line x1="6" y1="6" x2="6.01" y2="6"></line>
+                <line x1="6" y1="18" x2="6.01" y2="18"></line>
+              </svg>
+            </div>
+            <h3 class="feature-card-title">Distributed Memory</h3>
+            <p class="feature-card-desc">
+              Contextual KV caches distributed globally across edge PoPs with automatic coherence invalidation and atomic state checkpointing.
+            </p>
+          </div>
+          <div class="card-micro-widget">
+            <span class="widget-label">Cache Hit Ratio</span>
+            <div class="widget-value" style="color: var(--accent-cyan-light);">
+              <span>99.4% Global</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Feature Card 5 -->
+        <article class="feature-card" data-card="5">
+          <div class="feature-card-glow" aria-hidden="true"></div>
+          <div>
+            <div class="feature-icon-box emerald-tint" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+            </div>
+            <h3 class="feature-card-title">Zero-Knowledge Mesh</h3>
+            <p class="feature-card-desc">
+              Hardware-isolated confidential compute enclaves (TEE) ensuring end-to-end encrypted model weight evaluation and zero-retention privacy.
+            </p>
+          </div>
+          <div class="card-micro-widget">
+            <span class="widget-label">Enclave Audit</span>
+            <div class="widget-value" style="color: var(--accent-emerald);">
+              <span>TEE Active</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Feature Card 6 -->
+        <article class="feature-card" data-card="6">
+          <div class="feature-card-glow" aria-hidden="true"></div>
+          <div>
+            <div class="feature-icon-box" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                <line x1="15" y1="9" x2="15.01" y2="9"></line>
+              </svg>
+            </div>
+            <h3 class="feature-card-title">Adaptive Speculation</h3>
+            <p class="feature-card-desc">
+              Dynamic multi-draft speculative decoding pipelines achieving 3.8x higher throughput on standard consumer and cloud tensor accelerators.
+            </p>
+          </div>
+          <div class="card-micro-widget">
+            <span class="widget-label">Speedup Factor</span>
+            <div class="widget-value" style="color: var(--accent-violet-light);">
+              <span>3.8x Acceleration</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- CODE INTEGRATION BLOCK (Dark IDE-style Window with Syntax Highlighting & Runner) -->
+    <section class="section-container code-section" id="code">
+      <div class="section-header-block">
+        <span class="section-tag">[ DEVELOPER INTEGRATION ]</span>
+        <h2 class="section-title">Zero boilerplate. Instant synthesis.</h2>
+        <p class="section-desc">
+          Drop in the Synapse unified client in under three lines of code with automatic stream multiplexing and type safety.
+        </p>
+      </div>
+
+      <div class="ide-window">
+        <!-- IDE Toolbar -->
+        <div class="ide-toolbar">
+          <!-- 3 Decorative Window Controls -->
+          <div class="ide-controls" aria-hidden="true">
+            <div class="ide-dot ide-dot-red"></div>
+            <div class="ide-dot ide-dot-yellow"></div>
+            <div class="ide-dot ide-dot-green"></div>
+          </div>
+
+          <!-- Code Language Tabs -->
+          <div class="ide-tabs" role="tablist">
+            <button class="ide-tab-btn active" data-lang="typescript" role="tab" aria-selected="true">synapse.config.ts</button>
+            <button class="ide-tab-btn" data-lang="python" role="tab" aria-selected="false">client_stream.py</button>
+            <button class="ide-tab-btn" data-lang="rust" role="tab" aria-selected="false">pipeline.rs</button>
+            <button class="ide-tab-btn" data-lang="curl" role="tab" aria-selected="false">request.sh</button>
+          </div>
+
+          <!-- Actions -->
+          <div class="ide-actions">
+            <button class="copy-btn" id="copyCodeBtn" aria-label="Copy code to clipboard">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <span id="copyBtnText">Copy</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- IDE Main Body (Code Editor + Interactive Stream Terminal) -->
+        <div class="ide-body">
+          <!-- Code Block with Syntax Highlighting -->
+          <div class="code-container" id="codeEditorArea">
+            <!-- TypeScript Snippet (Default) -->
+            <pre class="code-snippet-pane" id="snippet-typescript"><code><div class="code-line"><span class="line-num">1</span><span class="code-content"><span class="syn-violet">import</span> { <span class="syn-cyan">SynapseRuntime</span>, <span class="syn-cyan">createNeuralMesh</span> } <span class="syn-violet">from</span> <span class="syn-emerald">'@synapse/core'</span>;</span></div>
+<div class="code-line"><span class="line-num">2</span><span class="code-content"></span></div>
+<div class="code-line"><span class="line-num">3</span><span class="code-content"><span class="syn-grey">// Initialize distributed neural mesh with zero cold-start</span></span></div>
+<div class="code-line"><span class="line-num">4</span><span class="code-content"><span class="syn-violet">const</span> <span class="syn-white">mesh</span> = <span class="syn-violet">await</span> <span class="syn-cyan">createNeuralMesh</span>({</span></div>
+<div class="code-line"><span class="line-num">5</span><span class="code-content">  <span class="syn-amber">apiKey</span>: process.env.<span class="syn-cyan">SYNAPSE_SECRET_KEY</span>,</span></div>
+<div class="code-line"><span class="line-num">6</span><span class="code-content">  <span class="syn-amber">region</span>: <span class="syn-emerald">'global-anycast'</span>,</span></div>
+<div class="code-line"><span class="line-num">7</span><span class="code-content">  <span class="syn-amber">speculativeDecoding</span>: <span class="syn-violet">true</span>,</span></div>
+<div class="code-line"><span class="line-num">8</span><span class="code-content">  <span class="syn-amber">memoryPersistence</span>: <span class="syn-emerald">'tee-enclave'</span></span></div>
+<div class="code-line"><span class="line-num">9</span><span class="code-content">});</span></div>
+<div class="code-line"><span class="line-num">10</span><span class="code-content"></span></div>
+<div class="code-line"><span class="line-num">11</span><span class="code-content"><span class="syn-grey">// Stream tokens with ultra-low latency sub-millisecond response</span></span></div>
+<div class="code-line"><span class="line-num">12</span><span class="code-content"><span class="syn-violet">const</span> <span class="syn-white">stream</span> = <span class="syn-violet">await</span> mesh.<span class="syn-cyan">streamPipeline</span>({</span></div>
+<div class="code-line"><span class="line-num">13</span><span class="code-content">  <span class="syn-amber">model</span>: <span class="syn-emerald">'synapse-v4-turbo'</span>,</span></div>
+<div class="code-line"><span class="line-num">14</span><span class="code-content">  <span class="syn-amber">prompt</span>: <span class="syn-emerald">'Synthesize autonomous multi-agent swarm architecture'</span>,</span></div>
+<div class="code-line"><span class="line-num">15</span><span class="code-content">  <span class="syn-amber">temperature</span>: <span class="syn-amber">0.2</span>,</span></div>
+<div class="code-line"><span class="line-num">16</span><span class="code-content">  <span class="syn-amber">maxTokens</span>: <span class="syn-amber">1048576</span></span></div>
+<div class="code-line"><span class="line-num">17</span><span class="code-content">});</span></div>
+<div class="code-line"><span class="line-num">18</span><span class="code-content"></span></div>
+<div class="code-line"><span class="line-num">19</span><span class="code-content"><span class="syn-violet">for await</span> (<span class="syn-violet">const</span> <span class="syn-white">chunk</span> <span class="syn-violet">of</span> stream) {</span></div>
+<div class="code-line"><span class="line-num">20</span><span class="code-content">  process.stdout.<span class="syn-cyan">write</span>(chunk.<span class="syn-cyan">delta</span>);</span></div>
+<div class="code-line"><span class="line-num">21</span><span class="code-content">}</span></div></code></pre>
+
+            <!-- Python Snippet -->
+            <pre class="code-snippet-pane" id="snippet-python" style="display:none;"><code><div class="code-line"><span class="line-num">1</span><span class="code-content"><span class="syn-violet">import</span> asyncio</span></div>
+<div class="code-line"><span class="line-num">2</span><span class="code-content"><span class="syn-violet">from</span> synapse <span class="syn-violet">import</span> <span class="syn-cyan">SynapseClient</span></span></div>
+<div class="code-line"><span class="line-num">3</span><span class="code-content"></span></div>
+<div class="code-line"><span class="line-num">4</span><span class="code-content"><span class="syn-grey"># Connect to confidential enclave</span></span></div>
+<div class="code-line"><span class="line-num">5</span><span class="code-content">client = <span class="syn-cyan">SynapseClient</span>(</span></div>
+<div class="code-line"><span class="line-num">6</span><span class="code-content">    api_key=<span class="syn-emerald">"syn_live_994a8f90c"</span>,</span></div>
+<div class="code-line"><span class="line-num">7</span><span class="code-content">    enable_speculation=<span class="syn-violet">True</span></span></div>
+<div class="code-line"><span class="line-num">8</span><span class="code-content">)</span></div>
+<div class="code-line"><span class="line-num">9</span><span class="code-content"></span></div>
+<div class="code-line"><span class="line-num">10</span><span class="code-content"><span class="syn-violet">async def</span> <span class="syn-cyan">main</span>():</span></div>
+<div class="code-line"><span class="line-num">11</span><span class="code-content">    response = <span class="syn-violet">await</span> client.stream(</span></div>
+<div class="code-line"><span class="line-num">12</span><span class="code-content">        model=<span class="syn-emerald">"synapse-v4-turbo"</span>,</span></div>
+<div class="code-line"><span class="line-num">13</span><span class="code-content">        prompt=<span class="syn-emerald">"Execute distributed consensus loop"</span></span></div>
+<div class="code-line"><span class="line-num">14</span><span class="code-content">    )</span></div>
+<div class="code-line"><span class="line-num">15</span><span class="code-content">    <span class="syn-violet">async for</span> token <span class="syn-violet">in</span> response:</span></div>
+<div class="code-line"><span class="line-num">16</span><span class="code-content">        print(token.text, end=<span class="syn-emerald">""</span>, flush=<span class="syn-violet">True</span>)</span></div>
+<div class="code-line"><span class="line-num">17</span><span class="code-content"></span></div>
+<div class="code-line"><span class="line-num">18</span><span class="code-content">asyncio.<span class="syn-cyan">run</span>(main())</span></div></code></pre>
+
+            <!-- Rust Snippet -->
+            <pre class="code-snippet-pane" id="snippet-rust" style="display:none;"><code><div class="code-line"><span class="line-num">1</span><span class="code-content"><span class="syn-violet">use</span> synapse_core::{<span class="syn-cyan">RuntimeConfig</span>, <span class="syn-cyan">MeshStream</span>};</span></div>
+<div class="code-line"><span class="line-num">2</span><span class="code-content"></span></div>
+<div class="code-line"><span class="line-num">3</span><span class="code-content"><span class="syn-violet">#[tokio::main]</span></span></div>
+<div class="code-line"><span class="line-num">4</span><span class="code-content"><span class="syn-violet">async fn</span> <span class="syn-cyan">main</span>() -> Result&lt;(), Box&lt;<span class="syn-violet">dyn</span> std::error::Error&gt;&gt; {</span></div>
+<div class="code-line"><span class="line-num">5</span><span class="code-content">    <span class="syn-violet">let</span> config = <span class="syn-cyan">RuntimeConfig::builder</span>()</span></div>
+<div class="code-line"><span class="line-num">6</span><span class="code-content">        .<span class="syn-cyan">with_zero_copy_simd</span>(<span class="syn-violet">true</span>)</span></div>
+<div class="code-line"><span class="line-num">7</span><span class="code-content">        .<span class="syn-cyan">build</span>()?;</span></div>
+<div class="code-line"><span class="line-num">8</span><span class="code-content"></span></div>
+<div class="code-line"><span class="line-num">9</span><span class="code-content">    <span class="syn-violet">let mut</span> stream = <span class="syn-cyan">MeshStream::connect</span>(config).<span class="syn-violet">await</span>?;</span></div>
+<div class="code-line"><span class="line-num">10</span><span class="code-content">    <span class="syn-violet">while let Some</span>(token) = stream.<span class="syn-cyan">next_token</span>().<span class="syn-violet">await</span> {</span></div>
+<div class="code-line"><span class="line-num">11</span><span class="code-content">        print!(<span class="syn-emerald">"{}"</span>, token);</span></div>
+<div class="code-line"><span class="line-num">12</span><span class="code-content">    }</span></div>
+<div class="code-line"><span class="line-num">13</span><span class="code-content">    Ok(())</span></div>
+<div class="code-line"><span class="line-num">14</span><span class="code-content">}</span></div></code></pre>
+
+            <!-- cURL Snippet -->
+            <pre class="code-snippet-pane" id="snippet-curl" style="display:none;"><code><div class="code-line"><span class="line-num">1</span><span class="code-content">curl -X POST https://api.synapse.network/v1/stream \</span></div>
+<div class="code-line"><span class="line-num">2</span><span class="code-content">  -H <span class="syn-emerald">"Authorization: Bearer $SYNAPSE_API_KEY"</span> \</span></div>
+<div class="code-line"><span class="line-num">3</span><span class="code-content">  -H <span class="syn-emerald">"Content-Type: application/json"</span> \</span></div>
+<div class="code-line"><span class="line-num">4</span><span class="code-content">  -d <span class="syn-emerald">'{</span></span></div>
+<div class="code-line"><span class="line-num">5</span><span class="code-content"><span class="syn-emerald">    "model": "synapse-v4-turbo",</span></span></div>
+<div class="code-line"><span class="line-num">6</span><span class="code-content"><span class="syn-emerald">    "stream": true,</span></span></div>
+<div class="code-line"><span class="line-num">7</span><span class="code-content"><span class="syn-emerald">    "messages": [{"role": "user", "content": "Deploy agent swarm"}]</span></span></div>
+<div class="code-line"><span class="line-num">8</span><span class="code-content"><span class="syn-emerald">  }'</span></span></div></code></pre>
+          </div>
+
+          <!-- Interactive Terminal Output Pane -->
+          <div class="ide-terminal-pane">
+            <div class="terminal-header">
+              <div class="terminal-title">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="4 17 10 11 4 5"></polyline>
+                  <line x1="12" y1="19" x2="20" y2="19"></line>
+                </svg>
+                <span>Live Neural Telemetry</span>
+              </div>
+              <span class="pulse-emerald" aria-hidden="true"></span>
+            </div>
+
+            <div class="terminal-stream-log" id="terminalStreamLog">
+              <div class="log-entry">
+                <span class="log-time">[12:00:01]</span>
+                <span style="color: var(--accent-cyan-light);">> Synapse Mesh socket handshake established.</span>
+              </div>
+              <div class="log-entry">
+                <span class="log-time">[12:00:01]</span>
+                <span>> Hardware enclave: AWS Nitro Enclave (Secure).</span>
+              </div>
+              <div class="log-entry">
+                <span class="log-time">[12:00:02]</span>
+                <span style="color: var(--accent-emerald);">> L3 cache hit: warm state loaded in 0.41ms.</span>
+              </div>
+              <div class="log-entry">
+                <span class="log-time">[12:00:02]</span>
+                <span>> Stream pipeline ready. Click 'Simulate Stream' to test.</span>
+              </div>
+            </div>
+
+            <div class="terminal-footer">
+              <button class="run-stream-btn" id="runStreamBtn">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+                <span>Simulate Stream</span>
+              </button>
+              <span style="font-family: var(--font-mono); font-size: 10px; color: rgba(255,255,255,0.4);">TTFT: 0.82ms</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INTERACTIVE DESIGN TOKENS & SANDBOX PLAYGROUND -->
+    <section class="section-container playground-section" id="playground">
+      <div class="section-header-block">
+        <span class="section-tag">[ SPECIFICATION & TOKENS ]</span>
+        <h2 class="section-title">Design tokens & micro-interactions.</h2>
+        <p class="section-desc">
+          Inspect the exact token values, dynamic blur filters, and test the interactive component states in real-time.
+        </p>
+      </div>
+
+      <div class="playground-grid">
+        <!-- Palette Swatches Card -->
+        <div class="playground-card">
+          <h3 class="playground-card-title">Curated Color System</h3>
+          <p style="font-size: 0.9rem; color: rgba(255,255,255,0.5);">
+            High-contrast neons set upon a solid Vantablack foundation with zero generic grays.
+          </p>
+          <div class="token-swatches-row">
+            <div class="token-swatch" data-hex="#030303">
+              <div class="swatch-color" style="background: #030303; border: 1px solid rgba(255,255,255,0.2);"></div>
+              <span class="swatch-name">Vantablack</span>
+              <span class="swatch-hex">#030303</span>
+            </div>
+            <div class="token-swatch" data-hex="#8B5CF6">
+              <div class="swatch-color" style="background: #8B5CF6; box-shadow: 0 0 10px rgba(139,92,246,0.5);"></div>
+              <span class="swatch-name">Violet Glow</span>
+              <span class="swatch-hex">#8B5CF6</span>
+            </div>
+            <div class="token-swatch" data-hex="#06B6D4">
+              <div class="swatch-color" style="background: #06B6D4; box-shadow: 0 0 10px rgba(6,182,212,0.5);"></div>
+              <span class="swatch-name">Cyan Ray</span>
+              <span class="swatch-hex">#06B6D4</span>
+            </div>
+            <div class="token-swatch" data-hex="#10B981">
+              <div class="swatch-color" style="background: #10B981; box-shadow: 0 0 10px rgba(16,185,129,0.5);"></div>
+              <span class="swatch-name">Emerald Live</span>
+              <span class="swatch-hex">#10B981</span>
+            </div>
+          </div>
+          <div id="swatchCopyToast" style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-emerald); opacity: 0; transition: opacity 0.3s ease;">
+            Hex code copied to clipboard!
+          </div>
+        </div>
+
+        <!-- Ambient Lighting Interactive Controller -->
+        <div class="playground-card">
+          <h3 class="playground-card-title">Ambient Orb Controller</h3>
+          <p style="font-size: 0.9rem; color: rgba(255,255,255,0.5);">
+            Tune the background Gaussian blur radius and glow opacity interactively.
+          </p>
+          
+          <div class="control-row">
+            <div class="control-label">
+              <span>Orb Blur Radius</span>
+              <span id="blurValDisplay">80px</span>
+            </div>
+            <input type="range" class="range-slider" id="orbBlurSlider" min="30" max="140" value="80">
+          </div>
+
+          <div class="control-row">
+            <div class="control-label">
+              <span>Glow Opacity</span>
+              <span id="opacityValDisplay">45%</span>
+            </div>
+            <input type="range" class="range-slider" id="orbOpacitySlider" min="10" max="90" value="45">
+          </div>
+
+          <div style="margin-top: 10px; display: flex; gap: 12px; align-items: center;">
+            <span style="font-family: var(--font-mono); font-size: 11px; color: rgba(255,255,255,0.4);">Preset:</span>
+            <button class="copy-btn" id="presetNeonBtn">Hyper Neon</button>
+            <button class="copy-btn" id="presetDeepBtn">Deep Minimal</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =========================================================================
+       Footer (4-column grid, #050505 background, top border white/5)
+       ========================================================================= -->
+  <footer class="footer-section" id="docs">
+    <div class="section-container">
+      <div class="footer-grid">
+        <!-- Brand Column -->
+        <div class="footer-brand-col">
+          <a href="#hero" class="footer-logo">
+            <span class="nav-logo-dot" aria-hidden="true"></span>
+            <span>Synapse</span>
+          </a>
+          <p class="footer-tagline">
+            The next-generation dark-themed design system and runtime substrate for ultra-responsive AI intelligence.
+          </p>
+        </div>
+
+        <!-- Column 2: Product -->
+        <div>
+          <h4 class="footer-col-title">Product</h4>
+          <ul class="footer-links-list">
+            <li class="footer-link-item"><a href="#features">Vector Engine</a></li>
+            <li class="footer-link-item"><a href="#features">Neural Swarms</a></li>
+            <li class="footer-link-item"><a href="#code">Speculative Stream</a></li>
+            <li class="footer-link-item"><a href="#playground">Design Tokens</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 3: Developers -->
+        <div>
+          <h4 class="footer-col-title">Developers</h4>
+          <ul class="footer-links-list">
+            <li class="footer-link-item"><a href="#code">TypeScript SDK</a></li>
+            <li class="footer-link-item"><a href="#code">Python Client</a></li>
+            <li class="footer-link-item"><a href="#code">Rust Crates</a></li>
+            <li class="footer-link-item"><a href="#code">REST API Docs</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 4: Architecture -->
+        <div>
+          <h4 class="footer-col-title">Architecture</h4>
+          <ul class="footer-links-list">
+            <li class="footer-link-item"><a href="#hero">Vantablack Foundations</a></li>
+            <li class="footer-link-item"><a href="#playground">Glassmorphism Token</a></li>
+            <li class="footer-link-item"><a href="#hero">Instrument Typography</a></li>
+            <li class="footer-link-item"><a href="#docs">Security Enclaves</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Footer Bottom Bar -->
+      <div class="footer-bottom-bar">
+        <div class="footer-copyright">
+          © 2026 Synapse Technologies Inc. All rights reserved.
+        </div>
+
+        <!-- 'All Systems Operational' Emerald Status Indicator -->
+        <div class="status-badge-container">
+          <span class="status-pulsing-dot" aria-hidden="true"></span>
+          <span>All Systems Operational // 99.999% Uptime</span>
+        </div>
+      </div>
     </div>
+  </footer>
+
+  <script src="app.js"></script>
 </body>
 </html>
